@@ -6,9 +6,9 @@ New-Alias -Name vim -Value nvim
 # edit the neovim config
 function vimcon {
     $currentDir = Get-Location
-    cd $env:localappdata\nvim
+    Set-Location $env:localappdata\nvim
     vim .
-    cd $currentDir
+    Set-Location $currentDir
 }
 
 # [komorebi] -->
