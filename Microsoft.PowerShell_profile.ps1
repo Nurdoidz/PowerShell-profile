@@ -1,3 +1,8 @@
+# symbolic links
+function Make-Link($target, $link) {
+    New-Item -Path $link -ItemType SymbolicLink -Value $target
+}
+
 # bash-like auto-complete
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 
@@ -15,4 +20,6 @@ function vimcon {
 function komo {
     komorebic start -a
 }
+$Env:KOMOREBI_CONFIG_HOME = $env:ndz + '\com\komorebi'
+$Env:WHKD_CONFIG_HOME = $env:ndz + '\com\whkd'
 
