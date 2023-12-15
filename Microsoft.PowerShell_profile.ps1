@@ -15,6 +15,9 @@ function vimcon {
     vim .
     Set-Location $currentDir
 }
+function dev {
+    Set-Location C:\Dev
+}
 
 # [komorebi] -->
 function komo {
@@ -22,4 +25,3 @@ function komo {
 }
 $Env:KOMOREBI_CONFIG_HOME = $env:ndz + '\com\komorebi'
 $Env:WHKD_CONFIG_HOME = $env:ndz + '\com\whkd'
-
