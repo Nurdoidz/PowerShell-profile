@@ -13,7 +13,7 @@ function Set-EnvVar {
     $env:keki_layers = [System.Environment]::GetEnvironmentVariable("keki_layers", "User")
 }
 New-Alias -Name 'Set-PoshContext' -Value 'Set-EnvVar' -Scope Global -Force
-oh-my-posh init pwsh --config $env:Ndz\Com\oh-my-posh\ayame.omp.json | Invoke-Expression
+oh-my-posh init pwsh --config 'C:\Dev\OhMyPosh-theme.git\ayame.omp.json' | Invoke-Expression
 
 # ── Neovim and VSCode ───────────────────────────────────────────
 New-Alias -Name vim -Value nvim
