@@ -22,11 +22,17 @@ New-Alias -Name w -Value wsl
 New-Alias -Name vd -Value vimdev
 New-Alias -Name codev -Value codedev
 New-Alias -Name c -Value code
+New-Alias -Name idea -Value idea64
+New-Alias -Name id -Value idea
+New-Alias -Name idev -Value ideadev
 Function v. {
     nvim .
 }
 Function c. {
     code .
+}
+Function id. {
+    idea .
 }
 Function vimcon {
     $CurrentDir = Get-Location
@@ -47,26 +53,51 @@ Function codeprofile {
     Set-Location $CurrentDir
 }
 Function dev {
-    param([string]$P, [switch]$C, [switch]$V)
+    param(
+        [Alias('P')]
+        [string]$Project,
+        [Alias('C')]
+        [switch]$Code,
+        [Alias('V')]
+        [switch]$Vim,
+        [Alias('I')]
+        [switch]$Idea
+    )
     $Path = 'C:\Dev'
-    if ($PSBoundParameters.ContainsKey('P')) {
-        $Path = "$Path\$P"
+    if ($PSBoundParameters.ContainsKey('Project')) {
+        $Path = "$Path\$Project"
     }
     Set-Location $Path
-    if ($C) {
+    if ($Code) {
         code .
     }
-    if ($V) {
+    if ($Vim) {
         vim .
+    }
+    if ($Idea) {
+        idea .
     }
 }
 Function vimdev {
-    param([string]$P)
-    dev -P $P -V
+    param(
+        [Alias('P')]
+        [string]$Project
+    )
+    dev -Project $Project -Vim
 }
 Function codedev {
-    param([string]$P)
-    dev -P $P -C
+    param(
+        [Alias('P')]
+        [string]$Project
+    )
+    dev -Project $Project -Code
+}
+Function ideadev {
+    param(
+        [Alias('P')]
+        [string]$Project
+    )
+    dev -Project $Project -Idea
 }
 $ProjectCompleter = {
     param($CommandName, $ParameterName, $WordToComplete, $CommandAst, $FakeBoundParameter)
