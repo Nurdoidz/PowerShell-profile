@@ -226,6 +226,7 @@ Function Set-License {
 
     for ($i = 0; $i -lt $Path.Count; $i++) {
         Copy-Item -Path $LicensePath -Destination $Path[$i]
+        Rename-Item -Path (Join-Path -Path $Path[$i] -ChildPath $License) -NewName 'LICENSE'
     }
 }
 Register-ArgumentCompleter -CommandName Set-License -ParameterName License -ScriptBlock {
