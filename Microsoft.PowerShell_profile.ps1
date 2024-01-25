@@ -236,4 +236,59 @@ Register-ArgumentCompleter -CommandName Set-License -ParameterName License -Scri
     return $Licenses | Where-Object { $_ -like "$WordToComplete*" }
 }
 
+Function Get-DevGitStatus {
+    $DevLocation = 'C:\Dev'
+    $PrevCWD = (Get-Item .).FullName
+    Set-Location $DevLocation
+    $RepositoryCount = (Get-ChildItem -Directory).Count
+    $CountedRepositories = 0
+    $StatusTable = @(@{}) * $RepositoryCount
+    Get-ChildItem -Directory |
+            Where-Object { $_.BaseName.EndsWith('.git') } |
+            ForEach-Object {
+                $PercentComplete = [math]::Round($CountedRepositories / $RepositoryCount * 100)
+                Write-Progress -Activity 'Git Status Progress' -Status "$PercentComplete% Complete:" -PercentComplete $PercentComplete
+                Set-Location $_.FullName
+                $StatusOutput = (git status --porcelain)
+                if ($StatusOutput.Count -gt 0) {
+                    $NewFiles = 0
+                    $DeletedFiles = 0
+                    $RenamedFiles = 0
+                    $ModifiedFiles = 0
+                    $UntrackedFiles = 0
+                    
+                    for ($i = 0; $i -lt $StatusOutput.Count; $i++) {
+                        $ThisLine = $StatusOutput[$i]
+                        if (([string]$ThisLine).Length -gt 1) {
+                            $Chars = $ThisLine.ToCharArray(0, 2)
+                            if ($Chars[0] -eq [char]'A') { $NewFiles++ }
+                            if ($Chars[0] -eq [char]'D') { $DeletedFiles++ }
+                            if ($Chars[0] -eq [char]'R') { $RenamedFiles++ }
+                            if ($Chars[1] -eq [char]'M') { $ModifiedFiles++ }
+                            if ($Chars[0] -eq [char]'?') { $UntrackedFiles++ }
+                        }
+                    }
+                    
+                    $StatusTable[$CountedRepositories] = [PSCustomObject]@{
+                        Repository = $_.BaseName;
+                        New = $NewFiles;
+                        Deleted = $DeletedFiles;
+                        Renamed = $RenamedFiles;
+                        Modified = $ModifiedFiles;
+                        Untracked = $UntrackedFiles;
+                    }
+                    $CountedRepositories++
+                }
+            }
+
+    Set-Location $PrevCWD
+    if ($CountedRepositories -gt 0) {
+        $StatusTable[0..($CountedRepositories -1)]
+    }
+    else {
+        Write-Host "All repositories are up to date."
+        0
+    }
+}
+
 Import-Module posh-git
