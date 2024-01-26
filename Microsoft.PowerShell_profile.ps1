@@ -107,9 +107,10 @@ $ProjectCompleter = {
 
     return $Dirs | Where-Object { $_ -like "$WordToComplete*" }
 }
-Register-ArgumentCompleter -CommandName vimdev -ParameterName P -ScriptBlock $ProjectCompleter
-Register-ArgumentCompleter -CommandName codedev -ParameterName P -ScriptBlock $ProjectCompleter
-Register-ArgumentCompleter -CommandName dev -ParameterName P -ScriptBlock $ProjectCompleter
+Register-ArgumentCompleter -CommandName dev -ParameterName Project -ScriptBlock $ProjectCompleter
+Register-ArgumentCompleter -CommandName vimdev -ParameterName Project -ScriptBlock $ProjectCompleter
+Register-ArgumentCompleter -CommandName codedev -ParameterName Project -ScriptBlock $ProjectCompleter
+Register-ArgumentCompleter -CommandName ideadev -ParameterName Project -ScriptBlock $ProjectCompleter
 
 Function cdls {
     param(
