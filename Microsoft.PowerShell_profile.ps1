@@ -339,3 +339,42 @@ Function Add-Sermons {
     }
     Set-Location $CurrentDir
 }
+
+Function New-DashboardTimelapse {
+    param(
+        [Parameter(Mandatory)]
+        [string]$Book
+    )
+
+    $PrevDir = Get-Location
+    Set-Location "$env:Ndz\Media\Dashboard exports\$Book"
+
+    if ($null -eq (Get-Command 'ffmpeg' -ErrorAction SilentlyContinue)) {
+        Write-Error 'ffmpeg.exe not found in PATH.'
+    }
+
+    [System.IO.Directory]::CreateDirectory("$env:Ndz\Media\Dashboard exports\$Book\out")
+
+    $i = 1
+    $Files = Get-ChildItem -Filter "*.png"
+    foreach ($File in $Files) {
+        Copy-Item $File.Name ".\out\$($i.ToString().PadLeft(3,'0')).png"
+        $i++
+    }
+
+    $Path = "$(Resolve-Path "~\Downloads")\$Book.webm"
+
+    ffmpeg -y -framerate 12 -pattern_type sequence -i .\out\%03d.png -vf "scale=3840:2160:force_original_aspect_ratio=decrease,pad=3840:2160:(ow-iw)/2:(oh-ih)/2" -c:v libvpx-vp9 -crf 28 $Path
+
+    Remove-Item .\out -Recurse -Force
+    $Path | Set-Clipboard
+    Invoke-Item $Path
+    Set-Location $PrevDir
+}
+Register-ArgumentCompleter -CommandName New-DashboardTimelapse -ParameterName Book -ScriptBlock {
+    param($CommandName, $ParameterName, $WordToComplete, $CommandAst, $FakeBoundParameter)
+
+    $Books = Get-ChildItem -Path "$env:Ndz\Media\Dashboard exports\" -Directory | Select-Object -ExpandProperty Name
+
+    return $Books | Where-Object { $_ -like "$WordToComplete*" }
+}
