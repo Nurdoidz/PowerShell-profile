@@ -6,6 +6,8 @@
 # bash-like auto-complete
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 
+New-Alias -Name q -Value qalc
+
 # ── Oh My Posh ──────────────────────────────────────────────────
 function Set-EnvVar {
     $env:keki_cake = [System.Environment]::GetEnvironmentVariable("keki_cake", "User")
