@@ -395,3 +395,7 @@ Function Out-Image {
         Write-Error "Failed to upload image to ImgBB."
     }
 }
+
+Function Get-Dashboard {
+    . "C:\Dev\Get-Dashboard.git\Get-Dashboard.ps1"
+}
