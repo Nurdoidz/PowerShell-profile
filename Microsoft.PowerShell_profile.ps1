@@ -378,3 +378,20 @@ Register-ArgumentCompleter -CommandName New-DashboardTimelapse -ParameterName Bo
 
     return $Books | Where-Object { $_ -like "$WordToComplete*" }
 }
+
+Function Out-Image {
+    param(
+        [Parameter(ValueFromPipeline, Mandatory)]
+        [string]$Path
+    )
+    $Key = Get-Content "$env:NDZ\Reference\ImgBB\api-key" -Raw
+    $Form = @{ image = Get-Item $Path }
+    $Response = Invoke-WebRequest -Uri "https://api.imgbb.com/1/upload?key=$Key" -Method POST -Form $Form | ConvertFrom-Json
+    if ($null -ne $Response.data.url) {
+        $Response.data.url | Set-Clipboard
+        Write-Host "URL `"$($Response.data.url)`" copied to clipboard."
+    }
+    else {
+        Write-Error "Failed to upload image to ImgBB."
+    }
+}
