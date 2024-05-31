@@ -400,3 +400,7 @@ Function Out-Image {
 Function Get-Dashboard {
     . "C:\Dev\Get-Dashboard.git\Get-Dashboard.ps1"
 }
+
+Function admin {
+    Start-Process wt pwsh -Verb RunAs
+}
