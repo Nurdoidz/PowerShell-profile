@@ -18,6 +18,20 @@ New-Alias -Name 'Set-PoshContext' -Value 'Set-EnvVar' -Scope Global -Force
 # oh-my-posh init pwsh --config 'C:\Dev\OhMyPosh-theme.git\ayame.omp.json' | Invoke-Expression
 (@(& oh-my-posh init pwsh --config='C:\Dev\OhMyPosh-theme.git\ayame.omp.json' --print) -join "`n") | Invoke-Expression
 
+# ── Yam imports ───────────────────────────────────────────────
+. $env:Yam\Syncthing.ps1
+. $env:Yam\Yam.ps1
+. $env:Yam\Nog.ps1
+. $env:Yam\Git.ps1
+
+Write-Host ' nog ' -NoNewline -Back Blue    -Fore Black
+Write-Host ' '     -NoNewline
+Write-Host ' yam ' -NoNewline -Back Magenta -Fore Black
+Write-Host ' '     -NoNewline
+Write-Host ' git ' -NoNewline -Back Green   -Fore Black
+Write-Host ' '     -NoNewline
+Write-Host ' syncthing '      -Back Cyan    -Fore Black
+
 # ── Neovim and VSCode ───────────────────────────────────────────
 New-Alias -Name vim -Value nvim
 New-Alias -Name v -Value nvim
