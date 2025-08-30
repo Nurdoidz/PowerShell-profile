@@ -348,13 +348,13 @@ Function New-DashboardTimelapse {
     )
 
     $PrevDir = Get-Location
-    Set-Location "$env:Ndz\Media\Dashboard exports\$Book"
+    Set-Location "$env:Ndz\Pic\Dashboard\$Book"
 
     if ($null -eq (Get-Command 'ffmpeg' -ErrorAction SilentlyContinue)) {
         Write-Error 'ffmpeg.exe not found in PATH.'
     }
 
-    [System.IO.Directory]::CreateDirectory("$env:Ndz\Media\Dashboard exports\$Book\out")
+    [System.IO.Directory]::CreateDirectory("$env:Ndz\Pic\Dashboard\$Book\out")
 
     $i = 1
     $Files = Get-ChildItem -Filter "*.png"
@@ -375,7 +375,7 @@ Function New-DashboardTimelapse {
 Register-ArgumentCompleter -CommandName New-DashboardTimelapse -ParameterName Book -ScriptBlock {
     param($CommandName, $ParameterName, $WordToComplete, $CommandAst, $FakeBoundParameter)
 
-    $Books = Get-ChildItem -Path "$env:Ndz\Media\Dashboard exports\" -Directory | Select-Object -ExpandProperty Name
+    $Books = Get-ChildItem -Path "$env:Ndz\Pic\Dashboard\" -Directory | Select-Object -ExpandProperty Name
 
     return $Books | Where-Object { $_ -like "$WordToComplete*" }
 }
@@ -385,7 +385,7 @@ Function Out-Image {
         [Parameter(ValueFromPipeline, Mandatory)]
         [string]$Path
     )
-    $Key = Get-Content "$env:NDZ\Reference\ImgBB\api-key" -Raw
+    $Key = Get-Content "$env:NDZ\Ref\ImgBB\api-key" -Raw
     $Form = @{ image = Get-Item $Path }
     $Response = Invoke-WebRequest -Uri "https://api.imgbb.com/1/upload?key=$Key" -Method POST -Form $Form | ConvertFrom-Json
     if ($null -ne $Response.data.url) {
