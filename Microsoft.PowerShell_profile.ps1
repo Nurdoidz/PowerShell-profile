@@ -25,15 +25,17 @@ New-Alias -Name 'Set-PoshContext' -Value 'Set-EnvVar' -Scope Global -Force
 . $env:Yam\Git.ps1
 . $env:Yam\Dashboard.ps1
 
-Write-Host ' nog '       -NoNewline  -Back Blue    -Fore Black
-Write-Host ' '           -NoNewline
-Write-Host ' yam '       -NoNewline  -Back Magenta -Fore Black
-Write-Host ' '           -NoNewline
-Write-Host ' git '       -NoNewline  -Back Green   -Fore Black
-Write-Host ' '           -NoNewline
-Write-Host ' syncthing ' -NoNewline  -Back Cyan    -Fore Black
-Write-Host ' '           -NoNewline
-Write-Host ' dashboard ' -Back White -Fore Black
+if ($PSCmdlet.MyInvocation.InvocationName -eq 'Interactive') {
+    Write-Host ' nog '       -NoNewline  -Back Blue    -Fore Black
+    Write-Host ' '           -NoNewline
+    Write-Host ' yam '       -NoNewline  -Back Magenta -Fore Black
+    Write-Host ' '           -NoNewline
+    Write-Host ' git '       -NoNewline  -Back Green   -Fore Black
+    Write-Host ' '           -NoNewline
+    Write-Host ' syncthing ' -NoNewline  -Back Cyan    -Fore Black
+    Write-Host ' '           -NoNewline
+    Write-Host ' dashboard ' -Back White -Fore Black
+}
 
 # ── Neovim and VSCode ───────────────────────────────────────────
 New-Alias -Name vim   -Value nvim
