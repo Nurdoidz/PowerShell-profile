@@ -231,10 +231,8 @@ Function Split-Markdown {
 
 # ── komorebi ────────────────────────────────────────────────────
 Function komo {
-    komorebic start -a
+    komorebic start --whkd
 }
-$Env:KOMOREBI_CONFIG_HOME = $env:ndz + '\com\komorebi'
-$Env:WHKD_CONFIG_HOME = $env:ndz + '\com\whkd'
 
 Function Add-Sermons {
     $CurrentDir = Get-Location
