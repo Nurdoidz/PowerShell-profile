@@ -248,6 +248,14 @@ Function Add-Sermons {
     Set-Location $CurrentDir
 }
 
+Function Open-Nog {
+    vim "$env:Ndz\Nog\$env:COMPUTERNAME\$(Get-Date -Format 'yyyy-MM')\$(Get-Date -Format 'yyyy-MM-dd').log"
+}
+
+Function Open-Log {
+    vim "$env:Ndz\Log\$env:COMPUTERNAME-$(Get-Date -Format 'yyyy-MM-dd').log"
+}
+
 Function Out-Image {
     param(
         [Parameter(ValueFromPipeline, Mandatory)]
