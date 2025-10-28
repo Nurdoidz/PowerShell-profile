@@ -234,20 +234,6 @@ Function komo {
     komorebic start --whkd
 }
 
-Function Add-Sermons {
-    $CurrentDir = Get-Location
-    Set-Location 'F:\Plex\Videos\Sermon'
-    $Links = (Get-Clipboard -Raw) -split "`n"
-    $Known = (Get-Content known.txt -Raw) -split "`n"
-    $Links | Where-Object {
-        -not $Known.Contains($_.Substring(32, 11))
-    } | ForEach-Object {
-        yt-dlp $_ --output "Grace City Denver - Sunday Service - %(upload_date>%Y-%m-%d)s - %(title)s [%(id)s]"
-        Add-Content .\known.txt $_.Substring(32, 11)
-    }
-    Set-Location $CurrentDir
-}
-
 Function Open-Nog {
     vim "$env:Ndz\Nog\$env:COMPUTERNAME\$(Get-Date -Format 'yyyy-MM')\$(Get-Date -Format 'yyyy-MM-dd').log"
 }
