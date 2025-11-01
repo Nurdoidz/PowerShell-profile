@@ -266,3 +266,5 @@ Function Get-Dashboard {
 Function admin {
     Start-Process wt pwsh -Verb RunAs
 }
+
+Import-Module Terminal-Icons
