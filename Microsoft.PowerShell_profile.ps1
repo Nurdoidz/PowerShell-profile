@@ -41,6 +41,8 @@ if (-not [Console]::IsInputRedirected -and -not [Console]::IsOutputRedirected) {
     Write-Host ' supply '    -Back Red   -Fore Black
 }
 
+New-Alias -Name supply -Value Add-SupplyItem
+
 # ── Neovim and VSCode ───────────────────────────────────────────
 New-Alias -Name vim   -Value nvim
 New-Alias -Name v     -Value nvim
