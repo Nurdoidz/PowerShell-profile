@@ -10,8 +10,8 @@ New-Alias -Name q -Value qalc
 
 # ── Oh My Posh ──────────────────────────────────────────────────
 function Set-EnvVar {
-    $env:keki_cake   = [System.Environment]::GetEnvironmentVariable("keki_cake", "User")
-    $env:keki_layer  = [System.Environment]::GetEnvironmentVariable("keki_layer", "User")
+    $env:keki_cake   = [System.Environment]::GetEnvironmentVariable("keki_cake",   "User")
+    $env:keki_layer  = [System.Environment]::GetEnvironmentVariable("keki_layer",  "User")
     $env:keki_layers = [System.Environment]::GetEnvironmentVariable("keki_layers", "User")
 }
 New-Alias -Name 'Set-PoshContext' -Value 'Set-EnvVar' -Scope Global -Force
@@ -129,8 +129,8 @@ $ProjectCompleter = {
 
     return $Dirs | Where-Object { $_ -like "$WordToComplete*" }
 }
-Register-ArgumentCompleter -CommandName dev -ParameterName Project -ScriptBlock $ProjectCompleter
-Register-ArgumentCompleter -CommandName vimdev -ParameterName Project -ScriptBlock $ProjectCompleter
+Register-ArgumentCompleter -CommandName dev     -ParameterName Project -ScriptBlock $ProjectCompleter
+Register-ArgumentCompleter -CommandName vimdev  -ParameterName Project -ScriptBlock $ProjectCompleter
 Register-ArgumentCompleter -CommandName codedev -ParameterName Project -ScriptBlock $ProjectCompleter
 Register-ArgumentCompleter -CommandName ideadev -ParameterName Project -ScriptBlock $ProjectCompleter
 
