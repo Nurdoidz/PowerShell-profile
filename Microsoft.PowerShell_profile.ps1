@@ -25,7 +25,7 @@ New-Alias -Name 'Set-PoshContext' -Value 'Set-EnvVar' -Scope Global -Force
 . $env:Yam\Git.ps1
 . $env:Yam\Dashboard.ps1
 
-if ($PSCmdlet.MyInvocation.InvocationName -eq 'Interactive') {
+if (-not [Console]::IsInputRedirected -and -not [Console]::IsOutputRedirected) {
     Write-Host ' nog '       -NoNewline  -Back Blue    -Fore Black
     Write-Host ' '           -NoNewline
     Write-Host ' yam '       -NoNewline  -Back Magenta -Fore Black
