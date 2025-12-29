@@ -193,42 +193,6 @@ Function openfuzz {
     Invoke-Item fuzz -Path $Path -File:$File -Directory:$Directory
 }
 
-Function Split-Markdown {
-    param(
-        [Parameter(Mandatory = $true, ValueFromPipeline = $true)]
-        [Alias("M")]
-        [string]$Markdown,
-        [PSDefaultValue(Help=1990)]
-        [Alias("L")]
-        [int]$Length = 1990
-    )
-
-    $Paragraphs = $Markdown -Split '\r?\n'
-    $Chunks = [System.Collections.ArrayList]::new()
-    $Chunk = ''
-    for ($i = 0; $i -lt $Paragraphs.Count; $i++) {
-        if ($Chunk.Length + $Paragraphs[$i].Length + 12 -le $Length) {
-            if ($Paragraphs[$i].Trim().Length -gt 0) {
-                $Chunk += $Paragraphs[$i] + "`n`n"
-            }
-        }
-        else {
-            $Chunks.Add($Chunk)
-            $Chunk = ''
-        }
-    }
-    if ($Chunk.Length -gt 0) {
-        $Chunks.Add($Chunk)
-    }
-    for ($i = 0; $i -lt $Chunks.Count; $i++) {
-        $PartString = "$($i + 1)/$($Chunks.Count)"
-        $Chunk = $Chunks[$i]
-        Set-Clipboard "$Chunk($PartString)"
-        Write-Host "(Part $PartString, $($Chunk.Length + $PartString.Length + 2) characters) copied to clipboard. Press enter to continue..."
-        Read-Host
-    }
-}
-
 # ── komorebi ────────────────────────────────────────────────────
 Function komo {
     komorebic start --whkd
