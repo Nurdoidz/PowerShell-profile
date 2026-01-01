@@ -201,7 +201,7 @@ Function openfuzz {
 
 # ── komorebi ────────────────────────────────────────────────────
 Function komo {
-    komorebic start --whkd
+    komorebic start --whkd --bar
 }
 
 Function Open-Nog {
