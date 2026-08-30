@@ -27,6 +27,7 @@ New-Alias -Name 'Set-PoshContext' -Value 'Set-EnvVar' -Scope Global -Force
 . $env:Yam\Dashboard.ps1
 . $env:Yam\KingSoopersReceiptHelper.ps1
 . $env:Yam\Supply.ps1
+. $env:Yam\FFmpeg.ps1
 
 if (-not [Console]::IsInputRedirected -and -not [Console]::IsOutputRedirected) {
     Write-Host ' nog '       -NoNewline  -Back Blue    -Fore Black
@@ -38,6 +39,8 @@ if (-not [Console]::IsInputRedirected -and -not [Console]::IsOutputRedirected) {
     Write-Host ' syncthing ' -NoNewline  -Back Cyan    -Fore Black
     Write-Host ' '           -NoNewline
     Write-Host ' dashboard ' -NoNewline  -Back White   -Fore Black
+    Write-Host ' '           -NoNewline
+    Write-Host ' ffmpeg '    -NoNewline  -Back Green   -Fore Black
     Write-Host ' '           -NoNewline
     Write-Host ' supply '    -Back Red   -Fore Black
 }
