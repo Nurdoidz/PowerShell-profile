@@ -29,6 +29,8 @@ New-Alias -Name 'Set-PoshContext' -Value 'Set-EnvVar' -Scope Global -Force
 . $env:Yam\Supply.ps1
 . $env:Yam\FFmpeg.ps1
 
+New-Alias -Name ksr -Value Add-KingSoopersReceiptToCSV
+
 if (-not [Console]::IsInputRedirected -and -not [Console]::IsOutputRedirected) {
     Write-Host ' nog '       -NoNewline  -Back Blue    -Fore Black
     Write-Host ' '           -NoNewline
