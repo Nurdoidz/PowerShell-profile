@@ -204,6 +204,58 @@ Function openfuzz {
     }
     Invoke-Item fuzz -Path $Path -File:$File -Directory:$Directory
 }
+function fzfreg {
+    function to_escape($hex, $fg = $true) {
+        $hex = $hex -replace '^#', ''
+        $r = [System.Convert]::ToByte($hex.Substring(0, 2), 16)
+        $g = [System.Convert]::ToByte($hex.Substring(2, 2), 16)
+        $b = [System.Convert]::ToByte($hex.Substring(4, 2), 16)
+        $z = $fg ? '3' : '4'
+        return "`e[${z}8;2;${r};${g};${b}m"
+    }
+
+    $prev_enc  = $OutputEncoding
+    $prev_cout = [Console]::OutputEncoding
+    $prev_cin  = [Console]::InputEncoding
+
+    try {
+        $OutputEncoding           = [System.Text.UTF8Encoding]::new($false)
+        [Console]::OutputEncoding = [System.Text.Encoding]::UTF8
+        [Console]::InputEncoding  = [System.Text.Encoding]::UTF8
+
+        $selected = Get-Content -Encoding utf8 -Raw $env:Ndz\Chishiki\manifest_register.csv `
+            | ConvertFrom-Csv `
+            | ForEach-Object { "$( $PSStyle.Foreground.Magenta )$( $_.Date )`t$( $PSStyle.Foreground.BrightMagenta )$( $_.'Manifest ID' )`t$( $PSStyle.Reset )$( $_.Note )" } `
+            | fzf --ansi `
+        
+        if ($selected) {
+
+            $date, $id, $note = $selected -split "`t"
+
+            $ansi_rx = '\x1b\[[0-9;]*m'
+            $date = $date -replace $ansi_rx, ''
+            $id   = $id   -replace $ansi_rx, ''
+            $note = $note -replace $ansi_rx, ''
+
+            $r    = "`e[0m"
+
+            $date = "$( to_escape '#322145' )${r}" `
+                  + "$( to_escape '#322145' $false )$( to_escape '#B097CE' ) ${date} ${r}" `
+                  + "$( to_escape '#322145' )$( to_escape '#130F1E' $false )${r}"
+            $id   = "$( to_escape '#130F1E' )$( to_escape '#763B73' $false )${r}" `
+                  + "$( to_escape '#763B73' $false )$( to_escape '#FF9BFF' ) ${id} ${r}" `
+                  + "$( to_escape '#763B73')${r}"
+            
+            Write-Host "${date}${id} ${note}"
+        }
+    }
+    finally {
+        $OutputEncoding           = $prev_enc
+        [Console]::OutputEncoding = $prev_cout
+        [Console]::InputEncoding  = $prev_cin
+    }
+}
+
 
 # ── komorebi ────────────────────────────────────────────────────
 Function komo {
