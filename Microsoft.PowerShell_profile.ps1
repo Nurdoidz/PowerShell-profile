@@ -241,4 +241,52 @@ Function admin {
     Start-Process wt pwsh -Verb RunAs
 }
 
+function Set-FileSystemDates {
+    param (
+        [Parameter(Mandatory)]
+        [string]$FilePath,
+
+        [Parameter(Mandatory)]
+        [string]$DateTimeString,
+
+        [switch]$All,
+        [switch]$Created,
+        [switch]$Modified,
+        [switch]$Accessed
+    )
+
+    if (-not (Test-Path $FilePath)) {
+        throw "File not found: $FilePath"
+    }
+
+    if (-not ($All -or $Created -or $Modified -or $Accessed)) {
+        throw "Specify at least one of: -All, -Created, -Modified, -Accessed"
+    }
+
+    $dt   = [datetime]::Parse($DateTimeString)
+    $item = Get-Item $FilePath
+
+    if ($All -or $Created)  { $item.CreationTime   = $dt }
+    if ($All -or $Modified) { $item.LastWriteTime  = $dt }
+    if ($All -or $Accessed) { $item.LastAccessTime = $dt }
+
+    $applied = if ($All) {
+        "All (Created, Modified, Accessed)"
+    } else {
+        ($Created, $Modified, $Accessed).ForEach({ $_ }) |
+            Where-Object { $_ } |
+            ForEach-Object { $_.ToString() } |
+            # label each active switch
+            & {
+                $labels = @()
+                if ($Created)  { $labels += "Created" }
+                if ($Modified) { $labels += "Modified" }
+                if ($Accessed) { $labels += "Accessed" }
+                $labels -join ", "
+            }
+    }
+
+    Write-Host "Updated [$applied] timestamp(s) on '$FilePath' to $dt"
+}
+
 Import-Module Terminal-Icons
