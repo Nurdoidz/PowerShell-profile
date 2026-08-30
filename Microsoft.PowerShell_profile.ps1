@@ -7,6 +7,7 @@
 Set-PSReadlineKeyHandler -Key Tab -Function MenuComplete
 
 New-Alias -Name q -Value qalc
+$env:JQ_COLORS = "95:91:35:33:92:36:36:94"
 
 # ── Oh My Posh ──────────────────────────────────────────────────
 function Set-EnvVar {
